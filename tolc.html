@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>راهنمای جامع آزمون TOLC | نحوه اجرا در VMware و آپدیت‌های جدید (2024)</title>
+    <meta name="description" content="راهنمای کامل آزمون TOLC شامل نحوه اجرا در VMware، تغییرات جدید، نکات مهم و ضروری. همه چیز درباره آزمون TOLC با آخرین آپدیت‌ها." />
+    <meta name="keywords" content="آزمون TOLC, راهنمای TOLC, اجرای TOLC در VMware, آپدیت TOLC, نکات TOLC, تولک, TOLC Test" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1d4ed8;
+            --accent-color: #60a5fa;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --white-color: #ffffff;
+            --text-color: #334155;
+            --border-color: #e2e8f0;
+            --shadow-light: 0 4px 15px rgba(0,0,0,0.08);
+            --shadow-medium: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            line-height: 1.8;
+            background-color: var(--white-color);
+            color: var(--text-color);
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* نوار ناوبری */
+        .navbar {
+            background: var(--white-color);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 0.5rem 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* هدر اصلی */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(29, 78, 216, 0.1) 100%);
+            padding: 8rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="%232563eb" stroke-width="0.5" /></svg>');
+            opacity: 0.1;
+            animation: rotate 60s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+            line-height: 1.2;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            animation: fadeInUp 1s ease 0.2s;
+            animation-fill-mode: both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* کارت‌های اطلاعات */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 4rem 0;
+        }
+
+        .info-card {
+            background: var(--white-color);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .info-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .info-card * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .info-card p {
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+        }
+
+        /* نکات مهم */
+        .important-notes {
+            background: var(--light-color);
+            padding: 6rem 0;
+        }
+
+        .note-card {
+            background: var(--white-color);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-light);
+            margin-bottom: 2rem;
+            border-right: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .note-card:hover {
+            transform: translateX(-10px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .note-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* دکمه‌ها */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white-color);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        /* انیمیشن‌های اضافی */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* رسپانسیو */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                TOLC
+            </a>
+            <ul class="nav-links">
+                <li><a href="#about">درباره آزمون</a></li>
+                <li><a href="#vmware">اجرا در VMware</a></li>
+                <li><a href="#updates">آپدیت‌های جدید</a></li>
+                <li><a href="#tips">نکات مهم</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>راهنمای جامع آزمون TOLC</h1>
+            <p>همه چیز درباره نحوه اجرای آزمون در VMware، تغییرات جدید و نکات ضروری برای موفقیت در آزمون TOLC</p>
+            <a href="#about" class="btn">شروع کنید</a>
+        </div>
+    </section>
+
+    <section id="about" class="container">
+        <div class="info-cards">
+            <div class="info-card">
+                <h3>معرفی آزمون TOLC</h3>
+                <p>آزمون TOLC یک آزمون آنلاین است که برای ارزیابی دانشجویان متقاضی تحصیل در دانشگاه‌های ایتالیا برگزار می‌شود.</p>
+                <a href="#" class="btn">اطلاعات بیشتر</a>
+            </div>
+            <div class="info-card">
+                <h3>انواع آزمون</h3>
+                <p>TOLC در چندین نوع مختلف برای رشته‌های گوناگون ارائه می‌شود، از جمله مهندسی، اقتصاد و علوم پایه.</p>
+                <a href="#" class="btn">مشاهده جزئیات</a>
+            </div>
+            <div class="info-card floating">
+                <h3>نحوه ثبت‌نام</h3>
+                <p>مراحل ثبت‌نام، مدارک مورد نیاز و راهنمای پرداخت هزینه آزمون را در اینجا مشاهده کنید.</p>
+                <a href="#" class="btn">شروع ثبت‌نام</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="vmware" class="important-notes">
+        <div class="container">
+            <h2>راهنمای اجرا در VMware</h2>
+            <div class="note-card">
+                <h4>پیش‌نیازهای سیستمی</h4>
+                <ul>
+                    <li>VMware Workstation Pro نسخه 16 یا بالاتر</li>
+                    <li>حداقل 8GB RAM</li>
+                    <li>پردازنده چهار هسته‌ای یا بالاتر</li>
+                    <li>حداقل 50GB فضای خالی هارد دیسک</li>
+                </ul>
+            </div>
+            <div class="note-card">
+                <h4>مراحل نصب و راه‌اندازی</h4>
+                <ol>
+                    <li>دانلود و نصب VMware Workstation Pro</li>
+                    <li>دانلود ایمیج ویندوز 10 مخصوص TOLC</li>
+                    <li>ایجاد ماشین مجازی جدید</li>
+                    <li>پیکربندی تنظیمات سیستم</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section id="updates" class="container">
+        <div class="info-cards">
+            <div class="info-card">
+                <h3>آپدیت‌های 2024</h3>
+                <ul>
+                    <li>پشتیبانی از macOS</li>
+                    <li>بهبود سیستم نظارت</li>
+                    <li>رابط کاربری جدید</li>
+                    <li>پایداری بیشتر اتصال</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h3>تغییرات اخیر</h3>
+                <p>آخرین تغییرات و بهبودهای اعمال شده در سیستم آزمون TOLC را مشاهده کنید.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="tips" class="important-notes">
+        <div class="container">
+            <h2>نکات مهم و ضروری</h2>
+            <div class="note-card">
+                <h4>قبل از آزمون</h4>
+                <ul>
+                    <li>تست کامل سیستم و اتصال اینترنت</li>
+                    <li>اطمینان از شارژ کافی لپ‌تاپ</li>
+                    <li>آماده‌سازی مدارک شناسایی</li>
+                </ul>
+            </div>
+            <div class="note-card">
+                <h4>حین آزمون</h4>
+                <ul>
+                    <li>عدم استفاده از برنامه‌های دیگر</li>
+                    <li>حفظ اتصال دائم به اینترنت</li>
+                    <li>توجه به زمان‌بندی هر بخش</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // انیمیشن نوار ناوبری هنگام اسکرول
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // انیمیشن ظاهر شدن المان‌ها هنگام اسکرول
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.info-card, .note-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
